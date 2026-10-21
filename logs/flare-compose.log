@@ -1,0 +1,29 @@
+flare-qwen38  | [ PENDING  ] Verify package.  0.0s
+flare-qwen38  | [    OK    ] Verify package.  signatures  0.3s
+flare-qwen38  | [ PENDING  ] Prepare model.  0.0s
+flare-qwen38  | [    OK    ] Prepare model.  1 rank  0.0s
+flare-qwen38  | [ PENDING  ] Initialize GPU.  0.0s
+flare-qwen38  | [    OK    ] Initialize GPU.  GPU 0 · SM121  0.2s
+flare-qwen38  | [ PENDING  ] Allocate model memory.  0.0s
+flare-qwen38  | [    OK    ] Allocate model memory.  74.7 GiB GPU · 0.0 GiB host  2.9s
+flare-qwen38  | [ PENDING  ] Load weights.  0.0s
+flare-qwen38  | [    OK    ] Load weights.  72.4 GiB  7.0s
+flare-qwen38  | [ PENDING  ] Prepare kernels.  0.0s
+flare-qwen38  | [    OK    ] Prepare kernels.  2008 kernels  1.1s
+flare-qwen38  | [ PENDING  ] Prepare execution.  0.0s
+flare-qwen38  | [    OK    ] Prepare execution.  concurrency 8  0.4s
+flare-qwen38  | [ PENDING  ] Prepare embedding tables.  0.0s
+flare-qwen38  | [    OK    ] Prepare embedding tables.  disk · 1024 MiB row cache  0.2s
+flare-qwen38  | [ PENDING  ] Plan cache.  0.0s
+flare-qwen38  | [    OK    ] Plan cache.  per GPU: 78.23 GiB loaded · 16.46 GiB cache budget · limit 80% of GPU memory  0.0s
+flare-qwen38  | [ PENDING  ] Allocate cache.  0.0s
+flare-qwen38  | [    OK    ] Allocate cache.  16.4 GiB · 1167360 KV tokens · 64 shared snapshot slots · limited by memory  1.9s
+flare-qwen38  | [ PENDING  ] Read model configuration.  0.0s
+flare-qwen38  | [    OK    ] Read model configuration.  local-inference-lab/Qwen3.8-Flash-Next-NVFP4-MXFP8-CSF-QAD  0.0s
+flare-qwen38  | [ PENDING  ] Load tokenizer.  0.0s
+flare-qwen38  | [    OK    ] Load tokenizer.  248320 token vocabulary  0.3s
+flare-qwen38  | [ PENDING  ] Start server.  0.0s
+flare-qwen38  | [    OK    ] Start server.  http://0.0.0.0:8888 · 262144 tokens/request  1.0s
+flare-qwen38  | [ PENDING  ] Shut down server.  0.0s
+flare-qwen38  | [    OK    ] Shut down server.  1.8s
+[Kflare-qwen38 exited with code 0

@@ -1,0 +1,58 @@
+[flare] warm-up
+[flare] decode speed by concurrency
+  decode c=1 rep=1: aggregate 37.9 tok/s, per-request median 37.8
+  decode c=1 rep=2: aggregate 39.7 tok/s, per-request median 39.6
+  decode c=1 rep=3: aggregate 39.3 tok/s, per-request median 39.1
+  decode c=2 rep=1: aggregate 48.7 tok/s, per-request median 24.6
+  decode c=2 rep=2: aggregate 48.5 tok/s, per-request median 24.7
+  decode c=2 rep=3: aggregate 48.7 tok/s, per-request median 24.8
+  decode c=4 rep=1: aggregate 66.8 tok/s, per-request median 17.4
+  decode c=4 rep=2: aggregate 66.8 tok/s, per-request median 17.4
+  decode c=4 rep=3: aggregate 68.3 tok/s, per-request median 17.9
+  decode c=8 rep=1: aggregate 75.9 tok/s, per-request median 9.7
+  decode c=8 rep=2: aggregate 76.0 tok/s, per-request median 9.7
+  decode c=8 rep=3: aggregate 76.0 tok/s, per-request median 9.7
+[flare] code decode
+[flare] prefill
+  prefill ~2048: 1806 tokens, TTFT 1.20s, 1505 tok/s
+  prefill ~2048: 1796 tokens, TTFT 1.22s, 1474 tok/s
+  prefill ~2048: 1796 tokens, TTFT 1.43s, 1253 tok/s
+  prefill ~8192: 7156 tokens, TTFT 3.69s, 1940 tok/s
+  prefill ~8192: 7089 tokens, TTFT 3.80s, 1867 tok/s
+  prefill ~8192: 7090 tokens, TTFT 3.80s, 1865 tok/s
+  prefill ~16384: 14191 tokens, TTFT 7.57s, 1875 tok/s
+  prefill ~16384: 14152 tokens, TTFT 7.23s, 1958 tok/s
+  prefill ~16384: 14241 tokens, TTFT 6.94s, 2051 tok/s
+[flare] GSM8K (greedy, sequential)
+  gsm8k 10/100: 10 correct so far
+  gsm8k 20/100: 20 correct so far
+  gsm8k 30/100: 30 correct so far
+  gsm8k 40/100: 40 correct so far
+  gsm8k 50/100: 50 correct so far
+  gsm8k 60/100: 60 correct so far
+  gsm8k 70/100: 70 correct so far
+  gsm8k 80/100: 80 correct so far
+  gsm8k 90/100: 88 correct so far
+  gsm8k 100/100: 97 correct so far
+[flare] HumanEval (greedy, sequential)
+  humaneval 1/20: HumanEval/0 PASS
+  humaneval 2/20: HumanEval/1 PASS
+  humaneval 3/20: HumanEval/2 PASS
+  humaneval 4/20: HumanEval/3 PASS
+  humaneval 5/20: HumanEval/4 PASS
+  humaneval 6/20: HumanEval/5 PASS
+  humaneval 7/20: HumanEval/6 PASS
+  humaneval 8/20: HumanEval/7 PASS
+  humaneval 9/20: HumanEval/8 PASS
+  humaneval 10/20: HumanEval/9 PASS
+  humaneval 11/20: HumanEval/10 PASS
+  humaneval 12/20: HumanEval/11 PASS
+  humaneval 13/20: HumanEval/12 PASS
+  humaneval 14/20: HumanEval/13 PASS
+  humaneval 15/20: HumanEval/14 PASS
+  humaneval 16/20: HumanEval/15 PASS
+  humaneval 17/20: HumanEval/16 PASS
+  humaneval 18/20: HumanEval/17 PASS
+  humaneval 19/20: HumanEval/18 PASS
+  humaneval 20/20: HumanEval/19 PASS
+[flare] wrote results-flare.json

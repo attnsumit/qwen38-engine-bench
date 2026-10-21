@@ -1,0 +1,42 @@
+
+
+  Mia's TensorFold Start Script
+  nvidia/Qwen3.8-Flash-Next-FP4-Local · 8 at once · 262144-token window · fp8 KV · vision off · drafts MTP · port 8888
+
+[1/5] Setup: image and checkpoint
+[start.sh] Ready: tensorfold-qwen38:zig-db28187 (patches c0a2df4c680d) and nvidia/Qwen3.8-Flash-Next-FP4-Local
+[2/5] Checks: arguments, previous server, port, memory
+[stop.sh] Stopping qwen38-flash-next-tf (up to 30s)
+[stop.sh] Stopped and removed qwen38-flash-next-tf; its GPU memory is free again
+[start.sh] Arguments OK, port 8888 free, 112 GiB memory available (this window needs ~106 at start)
+[start.sh] WARN: 8 full windows are ~40 GiB of fp8 cache beside ~81 GiB of weights: the engine keeps 10 GiB free and refuses a request that would not fit
+[3/5] Launch: container qwen38-flash-next-tf
+[start.sh] tensorfold-native serve /root/.cache/huggingface/hub/models--nvidia--Qwen3.8-Flash-Next-FP4-Local/snapshots/b9ce18a6887e18c089fdea8509a33e63429a3300 --name Qwen3.8-Flash-Next --host 127.0.0.1 --port 8888 --context 262144 --parallel 8 --max-tokens 1024 --temperature 0 --top-p 1 --top-k 1 --no-thinking --kv-dtype fp8 
+[4/5] Loading: ~81 GiB of weights (the FP8 n-gram table included)
+  │ GOVERNING TERMS: The software and materials are governed by the NVIDIA Software License Agreement
+  │ (found at https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/)
+  │ and the Product-Specific Terms for NVIDIA AI Products
+  │ (found at https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/).
+  ⋯ 15s elapsed, 19.2 GiB on the GPU (89 GiB free)
+  ⋯ 30s elapsed, 52.0 GiB on the GPU (56 GiB free)
+  │ prompt path: 2048-row chunks (the last up to 512 more), glue on every row, matmul K slices in one program (_b16mm_ks/_fp4mm_ks), experts on 128-pair items (fn_experts_prompt)
+  │ info: caches in reserved address space (2048 KiB granularity), indexer keys in a ring
+  │ info: sequence memory: 25.23 GiB (35.23 GiB free, 10.0 GiB kept free); fp8 KV cache, 1056 bytes a position a layer
+  ⋯ 45s elapsed, 74.4 GiB on the GPU (35 GiB free)
+  │ [tensorfold] prompt chunks of up to 2,048 tokens, cut at replies 256+ tokens apart
+  │ [tensorfold] open-file limit raised: soft 1024 -> 524288
+  │ [tensorfold] serving Qwen3.8-Flash-Next at http://127.0.0.1:8888/v1 (sampling: greedy; drafts: on; context: 262144; loaded in 52.6s)
+[start.sh] Server answered after 55s
+[5/5] Smoke test: one chat completion
+[start.sh] OK: 'OK', 2 tokens
+
+  ✔ Qwen3.8-Flash-Next is now LIVE! on port 8888
+
+    API      http://127.0.0.1:8888/v1   (model: Qwen3.8-Flash-Next)
+    Loaded   in 55s · 112 GiB was free
+    Model    nvidia/Qwen3.8-Flash-Next-FP4-Local @ b9ce18a6 (NVIDIA FP4 QAD: NVFP4 experts, MXFP8)
+    Window   262144 tokens · 8 at once · fp8 KV · drafts MTP
+    Logs     docker logs -f qwen38-flash-next-tf
+    Restart  ./start.sh restart
+    Stop     ./stop.sh
+

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qwen3.8 on one DGX Spark: TensorFold vs Flare</title>
+<style>
+  :root {
+    --bg: #0f1420; --card: #171e2e; --ink: #e8edf7; --muted: #8b97ad;
+    --a: #3ddc97; --b: #6aa8ff; --rule: #27314a; --warn: #f2c14e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.45 -apple-system, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { width: 1080px; padding: 48px 56px; }
+  h1 { font-size: 34px; margin: 0 0 6px; letter-spacing: -0.02em; }
+  .sub { color: var(--muted); margin-bottom: 28px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 22px 24px; }
+  .card h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 14px; font-weight: 600; }
+  .big { font-size: 46px; font-weight: 700; letter-spacing: -0.02em; }
+  .big small { font-size: 18px; color: var(--muted); font-weight: 500; }
+  .legend { display: flex; gap: 16px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .row { display: grid; grid-template-columns: 90px 1fr 70px; align-items: center; gap: 10px; margin: 8px 0; font-size: 14px; }
+  .track { background: #0c111c; border-radius: 6px; height: 18px; overflow: hidden; }
+  .bar { height: 100%; border-radius: 6px; }
+  .val { text-align: right; font-variant-numeric: tabular-nums; }
+  .win { color: var(--a); font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 7px 4px; text-align: right; border-bottom: 1px solid var(--rule); }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .acc { display: flex; gap: 26px; align-items: flex-end; }
+  .acc div { flex: 1; }
+  .acc .n { font-size: 34px; font-weight: 700; }
+  .acc .lbl { color: var(--muted); font-size: 13px; }
+  .foot { margin-top: 22px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+  .foot b { color: var(--warn); font-weight: 600; }
+  .title-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .tag { font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title-row">
+    <h1>Same Qwen3.8 weights. Two engines. One DGX Spark.</h1>
+  </div>
+  <div class="sub">Qwen3.8-Flash-Next (NVFP4) served by <b style="color:var(--a)">MiaAI TensorFold</b> vs <b style="color:var(--b)">NVIDIA Flare</b> · one model loaded at a time · greedy · thinking off · 21 Oct 2026</div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Throughput at 8 concurrent requests</h2>
+      <div class="big"><span class="win">+52%</span> <small>TensorFold aggregate</small></div>
+      <div style="color:var(--muted);margin-top:4px">115.5 vs 76.0 tok/s (median of 3)</div>
+      <div style="margin-top:14px">
+        <div class="legend"><span><i class="dot" style="background:var(--a)"></i>TensorFold</span><span><i class="dot" style="background:var(--b)"></i>Flare</span></div>
+        <div class="row"><span>TensorFold</span><div class="track"><div class="bar" style="width:100%;background:var(--a)"></div></div><span class="val">115.5</span></div>
+        <div class="row"><span>Flare</span><div class="track"><div class="bar" style="width:65.8%;background:var(--b)"></div></div><span class="val">76.0</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Accuracy (same questions, greedy)</h2>
+      <div class="acc">
+        <div><div class="n" style="color:var(--a)">97<span style="font-size:18px;color:var(--muted)">/100</span></div><div class="lbl">GSM8K · TensorFold</div></div>
+        <div><div class="n" style="color:var(--b)">97<span style="font-size:18px;color:var(--muted)">/100</span></div><div class="lbl">GSM8K · Flare</div></div>
+      </div>
+      <div class="acc" style="margin-top:16px">
+        <div><div class="n" style="color:var(--a)">20<span style="font-size:18px;color:var(--muted)">/20</span></div><div class="lbl">HumanEval · TensorFold</div></div>
+        <div><div class="n" style="color:var(--b)">20<span style="font-size:18px;color:var(--muted)">/20</span></div><div class="lbl">HumanEval · Flare</div></div>
+      </div>
+      <div style="color:var(--muted);font-size:13px;margin-top:12px">Same score. The two engines disagree on 2 of 100 items (paired test p = 1.0). Wording differs, as expected.</div>
+    </div>
+
+    <div class="card" style="grid-column: span 2">
+      <h2>Aggregate decode tok/s by concurrency (256-token replies)</h2>
+      <table>
+        <tr><th>Concurrent requests</th><th>TensorFold</th><th>Flare</th><th>TensorFold lead</th><th>TTFT TF / Flare</th></tr>
+        <tr><td>1</td><td>38.7</td><td>39.3</td><td>tie (−2%)</td><td>214 / 251 ms</td></tr>
+        <tr><td>2</td><td>56.1</td><td>48.7</td><td class="win">+15%</td><td>291 / 500 ms</td></tr>
+        <tr><td>4</td><td>77.8</td><td>66.8</td><td class="win">+16%</td><td>363 / 995 ms</td></tr>
+        <tr><td>8</td><td>115.5</td><td>76.0</td><td class="win">+52%</td><td>480 / 1,966 ms</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Prefill speed (cold prompts)</h2>
+      <table>
+        <tr><th>Prompt</th><th>TensorFold</th><th>Flare</th></tr>
+        <tr><td>1.8k tokens</td><td class="win">2,232 tok/s</td><td>1,474 tok/s</td></tr>
+        <tr><td>7.1k tokens</td><td class="win">2,175 tok/s</td><td>1,867 tok/s</td></tr>
+        <tr><td>14.2k tokens</td><td class="win">2,304 tok/s</td><td>1,958 tok/s</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Code decode, single stream</h2>
+      <div class="big"><span class="win">64</span> <small>vs 35 tok/s</small></div>
+      <div style="color:var(--muted);margin-top:6px">TensorFold (Zig, copy drafter absent on CUDA) vs Flare, quicksort prompt. Median of 3.</div>
+    </div>
+
+    <div class="card" style="grid-column: span 2">
+      <h2>Verdict</h2>
+      <div style="font-size:17px">Accuracy is the same on these tests. For throughput and time-to-first-token under load, TensorFold was ahead on this box. At a single stream, the two were tied.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>Scope:</b> one GB10, one checkpoint family (NVIDIA NVFP4 QAD; Flare runs its compiled build of the same weights), text only, thinking off.
+    GSM8K first 100 questions; HumanEval first 20 tasks; n is small, so accuracy gaps under ~10 points are within noise.
+    Speed: 3 repeats, median; nonce prefix per request, so prompt caches cannot flatter TTFT. Page cache not flushed (no sudo).
+    Engines were run one at a time on port 8888. Full methods and raw outputs are in the results folder.
+  </div>
+</div>
+</body>
+</html>
